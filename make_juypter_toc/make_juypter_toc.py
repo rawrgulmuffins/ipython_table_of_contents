@@ -16,17 +16,60 @@ will produce
 import sys
 import json
 
-def headers_to_table(markdown_headers):
-    return None
+def headers_to_table(markdown_headers, notebook_name):
+    """Produces a markdown table of contents from markdown headers.
 
-markdown_headers = []
-with open(sys.argv[1]) as notebook_handler:
-    notebook_data = json.load(notebook_handler)
-    for cell in notebook_data["cells"]:
-        if cell["cell_type"] == "markdown":
-            for line in cell["source"]:
-                if "#" in line:
-                    markdown_headers.append(line)
+    This function uses a two pass solution to turn markdown headers into a
+    table of contents. The first pass strips one # from every header and the
+    second pass turns all remaining # into spaces. Then the function produces
+    markdown links spaced in table formats.
+    """
+    if markdown_headers is None:
+        return None
 
-print(markdown_headers)
+    # First pass just strips #
+    stripped_headers = []
+    for header in markdown_headers:
+        # While we're here let's clean up the data.
+        header = header.replace("\n", "")
+        # Third argument is max replace>
+        stripped_headers.append(header.replace("#", "", 1))
 
+    # Second pass Produces actual table of contents.
+    table_of_contents = []
+    for header in stripped_headers:
+        # Using the fact that we know markdown headers have to start on the
+        # left side.
+        pound_stripped_header = header.lstrip("#")
+        nesting_count = len(header) - len(pound_stripped_header)
+
+        # Remove spaces from URL. All spaces are convered to - so -- is valid.
+        href_header = pound_stripped_header.replace(" ", "-")
+        # Finally constructing toc line
+        toc_line = (u"{spaces}* [{header_name}]" \
+            "(http://localhost:8888/{notebook_name}/#{href_header})").format(
+                spaces=" " * (nesting_count * 4),
+                header_name=pound_stripped_header,
+                notebook_name=notebook_name,
+                href_header=href_header,)
+        table_of_contents.append(toc_line)
+
+    return table_of_contents
+
+def get_headers():
+    markdown_headers = []
+    with open(sys.argv[1]) as notebook_handler:
+        notebook_data = json.load(notebook_handler)
+        for cell in notebook_data["cells"]:
+            if cell["cell_type"] == "markdown":
+                for line in cell["source"]:
+                    line = line.strip()
+                    if line.startswith("#"):
+                        markdown_headers.append(line)
+    return markdown_headers
+
+if __name__ == "__main__":
+    headers = get_headers()
+    toc = headers_to_table(headers, argv[2])
+    for line in toc:
+        print(line)
