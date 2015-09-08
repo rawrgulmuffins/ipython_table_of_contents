@@ -13,9 +13,9 @@ def test_headers_to_tables_one_level_nesting():
             u'#Topics Not Covered\n']
     table = headers_to_table(example_data, "test_name")
     expected_table = [
-            u'* [Introduction](http://localhost:8888/test_name/#Introduction)',
-            u'* [Why Flask?](http://localhost:8888/test_name/#Why-Flask?)',
-            u'* [Topics Not Covered](http://localhost:8888/test_name/#Topics-Not-Covered)',]
+            u'* [Introduction](http://localhost:8888/notebooks/test_name#Introduction)',
+            u'* [Why Flask?](http://localhost:8888/notebooks/test_name#Why-Flask?)',
+            u'* [Topics Not Covered](http://localhost:8888/notebooks/test_name#Topics-Not-Covered)',]
     assert table == expected_table
 
 def test_headers_to_tables_two_level_nesting():
@@ -25,9 +25,9 @@ def test_headers_to_tables_two_level_nesting():
             u'#Topics Not Covered\n']
     table = headers_to_table(example_data, "test_name")
     expected_table = [
-            u'* [Introduction](http://localhost:8888/test_name/#Introduction)',
-            u'    * [Why Flask?](http://localhost:8888/test_name/#Why-Flask?)',
-            u'* [Topics Not Covered](http://localhost:8888/test_name/#Topics-Not-Covered)',]
+            u'* [Introduction](http://localhost:8888/notebooks/test_name#Introduction)',
+            u'    * [Why Flask?](http://localhost:8888/notebooks/test_name#Why-Flask?)',
+            u'* [Topics Not Covered](http://localhost:8888/notebooks/test_name#Topics-Not-Covered)',]
     assert table == expected_table
 
 def test_headers_to_tables_three_level_nesting():
@@ -38,8 +38,8 @@ def test_headers_to_tables_three_level_nesting():
             u'#Routes\n',]
     table = headers_to_table(example_data, "test_name")
     expected_table = [
-            u'* [Introduction](http://localhost:8888/test_name/#Introduction)',
-            u'    * [Why Flask?](http://localhost:8888/test_name/#Why-Flask?)',
-            u'        * [Topics Not Covered](http://localhost:8888/test_name/#Topics-Not-Covered)',
-            u'* [Routes](http://localhost:8888/test_name/#Routes)',]
+            u'* [Introduction](http://localhost:8888/notebooks/test_name#Introduction)',
+            u'    * [Why Flask?](http://localhost:8888/notebooks/test_name#Why-Flask?)',
+            u'        * [Topics Not Covered](http://localhost:8888/notebooks/test_name#Topics-Not-Covered)',
+            u'* [Routes](http://localhost:8888/notebooks/test_name#Routes)',]
     assert table == expected_table

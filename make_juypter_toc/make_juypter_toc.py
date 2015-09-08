@@ -47,7 +47,7 @@ def headers_to_table(markdown_headers, notebook_name):
         href_header = pound_stripped_header.replace(" ", "-")
         # Finally constructing toc line
         toc_line = (u"{spaces}* [{header_name}]" \
-            "(http://localhost:8888/{notebook_name}/#{href_header})").format(
+            "(http://localhost:8888/notebooks/{notebook_name}#{href_header})").format(
                 spaces=" " * (nesting_count * 4),
                 header_name=pound_stripped_header,
                 notebook_name=notebook_name,
